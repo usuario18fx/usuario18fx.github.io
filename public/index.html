@@ -1,245 +1,341 @@
-<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Smokelandia</title>
-
-  <!-- Fuente -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Bootstrap Icons (estilo 2 pro) -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
   <style>
-    :root{ --green: #5afa82; --green2:#05ee09; --dark:#000;}
-    * { box-sizing: border-box; }
+    :root{
+      --dark:#0b0f14;
+      --glass: rgba(255,255,255,.10);
+      --glass2: rgba(255,255,255,.14);
+      --stroke: rgba(255,255,255,.20);
+      --txt: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --brand: #8cf;
+      --btn: rgba(255,255,255,.16);
+      --btn2: rgba(255,255,255,.22);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --tg-viewport-height: 100dvh;
+    }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: #0b0f14;
+      color: var(--txt);
       overflow: hidden;
-      background: var(--dark);
-      font-family: "Rubik", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
-    /* VIDEO fondo */
-    video.bg-video {
+    /* Background video */
+    .bg-video{
       position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
+      top:0; left:0;
+      width:100vw;
+      height: var(--tg-viewport-height, 100dvh);
       object-fit: cover;
-      z-index: 0;
-      background: #000;
+      z-index:0;
+      filter: brightness(.55) saturate(1.1);
     }
 
-    /* capa oscura encima del video */
-    .overlay {
+    /* Dark overlay */
+    .overlay{
       position: fixed;
       inset: 0;
-      z-index: 1;
-      background: radial-gradient(circle at 50% 55%, rgba(0,0,0,.05), rgba(0,0,0,.72));
-      pointer-events: none;
+      z-index:1;
+      background: radial-gradient(70% 90% at 50% 20%, rgba(0,0,0,.05), rgba(0,0,0,.70));
+      pointer-events:none;
     }
 
-    /* Chips top-right */
-    .chips {
+    /* Main container */
+    .container{
+      position: relative;
+      z-index:2;
+      width:100%;
+      height: var(--tg-viewport-height, 100dvh);
+      min-height: var(--tg-viewport-height, 100dvh);
+      display:grid;
+      place-items:center;
+      padding: 22px;
+      box-sizing:border-box;
+    }
+
+    /* Top right chips */
+    .chips{
       position: fixed;
       top: 18px;
       right: 18px;
-      z-index: 3;
-      display: flex;
-      gap: 10px;
-      align-items: center;
+      display:flex;
+      gap:10px;
+      z-index:3;
     }
-
-    .chip {
-      text-decoration: none;
-      color: rgba(255,255,255,.92);
-      background: rgba(87, 176, 111, 0.40);
-      border: 1px solid rgba(255,255,255,.35);
-      border-radius: 10px;
-      padding: 10px 12px;
-      min-width: 120px;
-      display: grid;
-      place-items: center;
+    .chip{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
       backdrop-filter: blur(10px);
-      box-shadow: 0 10px 25px rgba(0,0,0,.25);
-      transition: transform .15s ease, background .15s ease, border-color .15s ease;
-      user-select: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
+      font-weight: 600;
+      color: rgba(255,255,255,.90);
+      font-size: 13px;
+      user-select:none;
+    }
+    .dot{
+      width:10px; height:10px;
+      border-radius:999px;
+      background: #36d399;
+      box-shadow: 0 0 18px rgba(54,211,153,.75);
+    }
+    .dot2{
+      background:#60a5fa;
+      box-shadow: 0 0 18px rgba(96,165,250,.75);
     }
 
-    .chip:hover{
-      transform: translateY(-2px);
-      background: rgba(24, 121, 37, 0.58);
-      border-color: rgba(255,255,255,.55);
+    /* Hero card */
+    .hero{
+      width: min(560px, 92w);
+      max-width: 560px;
+      padding: 22px 20px 18px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 24px;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      display:grid;
+      gap: 14px;
+      transform: translateY(200px);
+      text-align:center;
     }
 
-    .chip .ico{
-      font-size: 18px;
-      line-height: 1;
-      margin-bottom: 6px;
-      filter: drop-shadow(0 0 10px rgba(90, 250, 130, 0.126));
-    }
-
-    .chip .lbl{
-      font-size: 11px;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      opacity: .95;
-      white-space: nowrap;
-    }
-
-    /* Contenido por arriba del video */
-    .container{
-      position: relative;
-      z-index: 2;
-      height: 100vh;
-      width: 100%;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      text-align: center;
-    }
-
-    /* Bloque central */
-    .hero {
-  width: min(170px, 155vw);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;  /* ← MENOS ESPACIO */
-  transform: translateY(200px);  /* ← MÁS ABAJO (era 160px) */
-}
-
-
-    /* Botón principal */
-    .getin {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .brand{
+      display:flex;
+      flex-direction:column;
       gap: 6px;
-      width: min(200px, 190vw);
-      height: 50px;
-      padding: 0 22px;
-      border: 4px solid var(--green);
-      border-radius: 12px;
-      background-color: transparent;
-      color: var(--green2);
-      font-weight: 700;
-      font-size: 28px;
-      letter-spacing: 0.10em;
-      cursor: pointer;
-      box-shadow: 0 17px 30px rgba(0,0,0,.35);
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+      align-items:center;
     }
 
-    .getin:hover {
-      transform: scale(1.08) rotate(6deg);
-      background-color: #0ef26dde;
-      color: #040404;
+    .brand h1{
+      margin:0;
+      font-size: 30px;
+      letter-spacing: .4px;
+    }
+    .brand p{
+      margin:0;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.4;
     }
 
-    .getin:active{
-      transform: scale(1.02) rotate(2deg);
+    .cta{
+      display:flex;
+      justify-content:center;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 6px;
     }
 
-    /* Texto debajo del botón */
-    .tagline {
-      margin-top: 1px;
-      font-size: 11px;
-      letter-spacing: 0.40em;
-      font-weight: 800;
-      text-transform: uppercase;
+    .btn{
+      appearance:none;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.14);
       color: rgba(255,255,255,.95);
-      text-shadow: 0 0 14px rgba(0,0,0,.6);
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor:pointer;
+      min-width: 170px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.18); border-color: rgba(255,255,255,.30); }
+    .btn:active{ transform: translateY(0px); }
+
+    .btn.secondary{
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.18);
     }
 
-    /* KEEP IT LIT - PEGADO Y RESPONSIVE */
-    .keep-it-lit {
-  color: #fefffe !important;  /* ← VERDE NEÓN MÁS BRILLANTE */
-  font-size: 0.95em;
-  text-align: center;
-  margin-top: 4px !important;  /* ← SUPER PEGADO (era 8px) */
-  padding: 2px 8px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  text-shadow: 0 0 8px rgb(239, 242, 241);
-}
+    /* Bottom nav */
+    .nav{
+      position: fixed;
+      left: 0; right: 0;
+      bottom: 0;
+      z-index: 4;
+      padding: 14px 16px 18px;
+      box-sizing:border-box;
+      display:flex;
+      justify-content:center;
+      pointer-events:none;
+    }
+    .nav-inner{
+      width: min(560px, 92vw);
+      display:flex;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 18px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      pointer-events:auto;
+    }
+    .nav a{
+      flex: 1;
+      text-decoration:none;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap: 10px;
+      padding: 12px 10px;
+      border-radius: 14px;
+      color: rgba(255,255,255,.92);
+      font-weight: 700;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      transition: background .12s ease, border-color .12s ease, transform .12s ease;
+      user-select:none;
+    }
+    .nav a:hover{ background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.22); transform: translateY(-1px); }
+    .nav a:active{ transform: translateY(0px); }
 
-    @media (max-width: 170px){
-      .chips{ top: 10px; right: 10px; gap: 1px; }
-      .chip{ min-width: 105px; padding: 9px 10px; }
-      .hero{ transform: translateY(170px); }
-      .getin{ height: 60px; font-size: 18px; }
-      .tagline{ letter-spacing: 0.26em; font-size: 13px; }
+    /* Small screens */
+    @media (max-width: 420px){
+      .hero{ width: min(360px, 92vw); }
+      .btn{ min-width: 155px; }
+      .brand h1{ font-size: 26px; }
+    }
+
+    /* Short height screens (Telegram WebView can be short before expand) */
+    @media (max-height: 560px){
+      .hero{ transform: translateY(90px); }
     }
   </style>
 </head>
-
 <body>
-  <video class="bg-video" autoplay muted loop playsinline preload="auto">
-    <source src="/assets/SMKLING.mp4" type="video/mp4">
-  </video>
-
+  <video class="bg-video" autoplay muted loop playsinline src="assets/SMKLING.mp4"></video>
   <div class="overlay"></div>
 
-  <!-- Chips -->
-  <nav class="chips" aria-label="Links">
-    <a class="chip" href="https://x.com/User18fx" target="_blank" rel="noopener noreferrer">
-      <div class="ico"><i class="bi bi-twitter-x"></i></div>
-      <div class="lbl">x/twitter</div>
-    </a>
-
-    <a class="chip" href="https://t.me/User18fx" target="_blank" rel="noopener noreferrer">
-      <div class="ico"><i class="bi bi-telegram"></i></div>
-      <div class="lbl">dm</div>
-    </a>
-
-    <a class="chip" href="https://t.me/User18Fx_bot" target="_blank" rel="noopener noreferrer">
-      <div class="ico"><i class="bi bi-stars"></i></div>
-      <div class="lbl">VIP | Fx</div>
-    </a>
-  </nav>
+  <div class="chips">
+    <div class="chip"><span class="dot"></span> Live</div>
+    <div class="chip"><span class="dot dot2"></span> SMK</div>
+  </div>
 
   <main class="container">
     <section class="hero">
-  <button class="getin" id="get-in-btn">GET IN</button>
-  <div class="keep-it-lit">keep it lit</div>
-</section>
+      <div class="brand">
+        <h1>Smokelandia</h1>
+        <p>Landing + tracking para Telegram WebApp. Si ves gris, no es tu vida… es el viewport 😅</p>
+      </div>
 
+      <div class="cta">
+        <button id="btnMenu" class="btn">Abrir menú</button>
+        <button id="btnUserFX" class="btn secondary">User FX</button>
+      </div>
+    </section>
   </main>
 
+  <div class="nav">
+    <div class="nav-inner">
+      <a href="#" id="navHome">Home</a>
+      <a href="#" id="navMenu">Menu</a>
+      <a href="#" id="navContact">Contact</a>
+    </div>
+  </div>
+
   <script>
-    const btn = document.getElementById('get-in-btn');
-    const TELEGRAM_URL = 'https://t.me/+RFGSPa85SR43Mzgx';
-
-    if (btn) {
-      btn.addEventListener('click', async (e) => {
-        e.preventDefault();
-
-        try {
-          await fetch('/api/track', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              event: 'click_get_in',
-              extra: { source: 'landing_main' },
-            }),
-          });
-        } catch (err) {
-          console.error('Error tracking click', err);
+    // Telegram WebApp: asegura que el contenido se muestre (especialmente en mini-app)
+    (function () {
+      try {
+        const tg = window.Telegram && window.Telegram.WebApp;
+        if (!tg) {
+          document.documentElement.style.setProperty('--tg-viewport-height', '100dvh');
+          return;
         }
 
-        window.location.href = TELEGRAM_URL;
-      });
+        tg.ready();
+        tg.expand();
+
+        const setVH = () => {
+          const h = tg.viewportHeight || window.innerHeight || 0;
+          if (h) document.documentElement.style.setProperty('--tg-viewport-height', `${h}px`);
+        };
+
+        setVH();
+        tg.onEvent?.('viewportChanged', setVH);
+      } catch (_) {
+        document.documentElement.style.setProperty('--tg-viewport-height', '100dvh');
+      }
+    })();
+
+    const TELEGRAM_URL = 'https://t.me/SmokelandiaFx_bot';
+    const btnMenu = document.getElementById('btnMenu');
+    const btnUserFX = document.getElementById('btnUserFX');
+
+    // Enviar tracking sin bloquear la navegación
+    function trackFast(payload) {
+      // 1) sendBeacon (no bloquea)
+      try {
+        if (navigator.sendBeacon) {
+          const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+          navigator.sendBeacon('/api/track', blob);
+          return;
+        }
+      } catch (_) {}
+
+      // 2) fetch fallback sin await + keepalive
+      try {
+        fetch('/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+          keepalive: true,
+        }).catch(() => {});
+      } catch (_) {}
     }
+
+    // Track page view
+    trackFast({
+      event: 'page_view',
+      extra: {
+        source: 'smk_landing',
+        path: location.pathname,
+        referrer: document.referrer || null,
+        ua: navigator.userAgent
+      }
+    });
+
+    function openTelegram() {
+      trackFast({ event: 'click_menu', extra: { source: 'smk_landing', path: location.pathname } });
+
+      // Si estamos dentro de Telegram WebApp, mejor abrir con su API
+      const tg = window.Telegram && window.Telegram.WebApp;
+      if (tg && tg.openTelegramLink) {
+        tg.openTelegramLink(TELEGRAM_URL);
+        return;
+      }
+
+      // fallback normal
+      window.location.href = TELEGRAM_URL;
+    }
+
+    function openUserFX() {
+      trackFast({ event: 'click_userfx', extra: { source: 'smk_landing', path: location.pathname } });
+      alert('User FX: aquí va tu página/flujo cuando lo termines 👀');
+    }
+
+    if (btnMenu) btnMenu.addEventListener('click', openTelegram);
+    if (btnUserFX) btnUserFX.addEventListener('click', openUserFX);
+
+    // Nav buttons
+    document.getElementById('navHome')?.addEventListener('click', (e) => { e.preventDefault(); trackFast({ event: 'nav_home' }); });
+    document.getElementById('navMenu')?.addEventListener('click', (e) => { e.preventDefault(); openTelegram(); });
+    document.getElementById('navContact')?.addEventListener('click', (e) => { e.preventDefault(); trackFast({ event: 'nav_contact' }); });
   </script>
 </body>
 </html>
